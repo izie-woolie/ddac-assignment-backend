@@ -1,12 +1,21 @@
-@DDACAssignment_HostAddress = http://localhost:5293
+@RootUrl = http://localhost:5293
 
-GET {{DDACAssignment_HostAddress}}/api/User
+### User
+### GetUsers
+GET {{RootUrl}}/api/User/
 Accept: application/json
 
-###
-POST {{DDACAssignment_HostAddress}}/api/User
+### GetById
+GET {{RootUrl}}/api/User/29115d1b-b57a-4b41-a72d-4a9fbe6e4837
+Accept: application/json
+
+### Post
+POST {{RootUrl}}/api/User
 Content-Type: application/json
 
 {
-  "username": "Izie"
+  "username": "Woolie",
+  "email": "woolie@gmail.com",
+  "passwordHash": "hashed_password",
+  "type": "Player"
 }
