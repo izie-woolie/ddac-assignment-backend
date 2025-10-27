@@ -33,18 +33,27 @@ namespace DDACAssignment.Data
             modelBuilder.Entity<User>()
                 .HasOne(u => u.PlayerProfile)
                 .WithOne(p => p.User)
-                .HasForeignKey<Player>(p => p.UserId);
+                .HasForeignKey<Player>(p => p.UserId)
+                .IsRequired(false);
 
 
             modelBuilder.Entity<User>()
                 .HasOne(u => u.PersonnelProfile)
                 .WithOne(p => p.User)
-                .HasForeignKey<Personnel>(p => p.UserId);
+                .HasForeignKey<Personnel>(p => p.UserId)
+                .IsRequired(false);
 
             modelBuilder.Entity<User>()
                 .HasOne(u => u.OrganizerProfile)
                 .WithOne(p => p.User)
-                .HasForeignKey<Organizer>(o => o.UserId);
+                .HasForeignKey<Organizer>(o => o.UserId)
+                .IsRequired(false);
+
+            modelBuilder.Entity<Match>()
+                .HasOne(m => m.Schedule)
+                .WithOne(s => s.Matches)
+                .HasForeignKey<Schedule>(s => s.MatchId)
+                .IsRequired(false);
         }
     }
 

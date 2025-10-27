@@ -3,6 +3,7 @@ using System;
 using DDACAssignment.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DDACAssignment.Migrations
 {
     [DbContext(typeof(DDACDbContext))]
-    partial class DDACDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251027064910_AddedOptional")]
+    partial class AddedOptional
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,9 +231,6 @@ namespace DDACAssignment.Migrations
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("MatchId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime?>("StartTime")
                         .HasColumnType("timestamp with time zone");
 
@@ -239,9 +239,6 @@ namespace DDACAssignment.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MatchId")
-                        .IsUnique();
 
                     b.ToTable("Schedules");
                 });
@@ -404,20 +401,6 @@ namespace DDACAssignment.Migrations
                         .HasForeignKey("DDACAssignment.Models.Player", "UserId");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("DDACAssignment.Models.Schedule", b =>
-                {
-                    b.HasOne("DDACAssignment.Models.Match", "Matches")
-                        .WithOne("Schedule")
-                        .HasForeignKey("DDACAssignment.Models.Schedule", "MatchId");
-
-                    b.Navigation("Matches");
-                });
-
-            modelBuilder.Entity("DDACAssignment.Models.Match", b =>
-                {
-                    b.Navigation("Schedule");
                 });
 
             modelBuilder.Entity("DDACAssignment.Models.User", b =>
