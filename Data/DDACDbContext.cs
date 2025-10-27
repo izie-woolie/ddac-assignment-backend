@@ -26,6 +26,26 @@ namespace DDACAssignment.Data
         public DbSet<TeamStatistic> TeamStatistics => Set<TeamStatistic>();
         public DbSet<PlayerPerformance> PlayerPerformances => Set<PlayerPerformance>();
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.PlayerProfile)
+                .WithOne(p => p.User)
+                .HasForeignKey<Player>(p => p.UserId);
+
+
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.PersonnelProfile)
+                .WithOne(p => p.User)
+                .HasForeignKey<Personnel>(p => p.UserId);
+
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.OrganizerProfile)
+                .WithOne(p => p.User)
+                .HasForeignKey<Organizer>(o => o.UserId);
+        }
     }
 
 }
