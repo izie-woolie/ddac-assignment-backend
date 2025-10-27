@@ -49,11 +49,18 @@ namespace DDACAssignment.Data
                 .HasForeignKey<Organizer>(o => o.UserId)
                 .IsRequired(false);
 
+
             modelBuilder.Entity<Match>()
                 .HasOne(m => m.Schedule)
                 .WithOne(s => s.Matches)
                 .HasForeignKey<Schedule>(s => s.MatchId)
                 .IsRequired(false);
+
+            modelBuilder.Entity<Player>()
+                .HasOne(p => p.PlayerPerformance)
+                .WithOne(pp => pp.Player)
+                .HasForeignKey<PlayerPerformance>(pp => pp.PlayerId);
+
         }
     }
 

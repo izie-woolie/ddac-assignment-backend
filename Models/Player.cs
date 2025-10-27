@@ -8,5 +8,7 @@
 
         public Guid UserId { get; set; }
         public User User { get; set; } = null!;
+
+        public PlayerPerformance? PlayerPerformance { get; set; }
     }
 }
