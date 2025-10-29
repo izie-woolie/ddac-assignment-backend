@@ -61,6 +61,11 @@ namespace DDACAssignment.Data
                 .WithOne(pp => pp.Player)
                 .HasForeignKey<PlayerPerformance>(pp => pp.PlayerId);
 
+            modelBuilder.Entity<Team>()
+                .HasOne(t => t.TeamStatistic)
+                .WithOne(ts => ts.Team)
+                .HasForeignKey<TeamStatistic>(ts => ts.TeamId);
+
         }
     }
 
