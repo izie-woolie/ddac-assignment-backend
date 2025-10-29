@@ -14,5 +14,6 @@
         public Tournament Tournament { get; set; } = null!;
 
         public ICollection<PlayerMatchStat> PlayerMatchStats { get; set; } = [];
+        public ICollection<MatchResult> MatchResults { get; set; } = null!;
     }
 }
