@@ -33,4 +33,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapGet("/", () => "You are watching the greatest API in the world: DDAC");
 app.Run();
