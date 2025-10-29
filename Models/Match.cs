@@ -7,5 +7,7 @@
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public Schedule? Schedule { get; set; }
+
+        public ICollection<Round> Rounds { get; set; } = [];
     }
 }

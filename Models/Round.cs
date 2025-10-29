@@ -5,5 +5,8 @@
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Order { get; set; } = null!;
         public string Name { get; set; } = null!;
+
+        public Guid MatchId { get; set; }
+        public Match Match { get; set; } = null!;
     }
 }
