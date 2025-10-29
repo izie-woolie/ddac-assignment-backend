@@ -14,5 +14,7 @@
 
         public ICollection<Match> Matches { get; set; } = [];
 
+        public ICollection<TournamentResult> TournamentResults { get; set; } = [];
+
     }
 }
