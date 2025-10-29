@@ -10,5 +10,8 @@
         public User User { get; set; } = null!;
 
         public PlayerPerformance? PlayerPerformance { get; set; }
+
+        public Guid TeamId { get; set; }
+        public Team Team { get; set; } = null!;
     }
 }

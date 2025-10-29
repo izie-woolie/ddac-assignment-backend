@@ -3,6 +3,7 @@ using System;
 using DDACAssignment.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DDACAssignment.Migrations
 {
     [DbContext(typeof(DDACDbContext))]
-    partial class DDACDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251029124820_AddedTeamPersonnelRelationship")]
+    partial class AddedTeamPersonnelRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,15 +136,10 @@ namespace DDACAssignment.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("TeamId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TeamId");
 
                     b.HasIndex("UserId")
                         .IsUnique();
@@ -420,17 +418,9 @@ namespace DDACAssignment.Migrations
 
             modelBuilder.Entity("DDACAssignment.Models.Player", b =>
                 {
-                    b.HasOne("DDACAssignment.Models.Team", "Team")
-                        .WithMany("Player")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("DDACAssignment.Models.User", "User")
                         .WithOne("PlayerProfile")
                         .HasForeignKey("DDACAssignment.Models.Player", "UserId");
-
-                    b.Navigation("Team");
 
                     b.Navigation("User");
                 });
@@ -492,8 +482,6 @@ namespace DDACAssignment.Migrations
             modelBuilder.Entity("DDACAssignment.Models.Team", b =>
                 {
                     b.Navigation("Personnel");
-
-                    b.Navigation("Player");
 
                     b.Navigation("TeamStatistic");
                 });

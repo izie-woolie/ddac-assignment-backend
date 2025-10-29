@@ -7,5 +7,9 @@
         public DateTime CreatedAt { get; set; }
 
         public TeamStatistic? TeamStatistic { get; set; }
+
+        public ICollection<Personnel> Personnel { get; set; } = [];
+
+        public ICollection<Player> Player { get; set; } = [];
     }
 }
