@@ -74,12 +74,17 @@ namespace DDACAssignment.Data
             modelBuilder.Entity<Team>()
                 .HasMany(t => t.Personnel)
                 .WithOne(p => p.Team)
-                .HasForeignKey(t => t.TeamId);
+                .HasForeignKey(p => p.TeamId);
 
             modelBuilder.Entity<Team>()
                 .HasMany(t => t.Player)
                 .WithOne(p => p.Team)
-                .HasForeignKey(t => t.TeamId);
+                .HasForeignKey(p => p.TeamId);
+
+            modelBuilder.Entity<Organizer>()
+                .HasMany(o => o.Tournament)
+                .WithOne(t => t.Organizer)
+                .HasForeignKey(t => t.OrganizerId);
 
         }
     }
