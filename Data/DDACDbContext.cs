@@ -86,6 +86,11 @@ namespace DDACAssignment.Data
                 .WithOne(t => t.Organizer)
                 .HasForeignKey(t => t.OrganizerId);
 
+            modelBuilder.Entity<Tournament>()
+                .HasMany(t => t.Matches)
+                .WithOne(m => m.Tournament)
+                .HasForeignKey(m => m.TournamentId);
+
         }
     }
 

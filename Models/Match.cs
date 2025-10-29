@@ -9,5 +9,8 @@
         public Schedule? Schedule { get; set; }
 
         public ICollection<Round> Rounds { get; set; } = [];
+
+        public Guid TournamentId { get; set; }
+        public Tournament Tournament { get; set; } = null!;
     }
 }

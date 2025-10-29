@@ -11,5 +11,8 @@
 
         public Guid OrganizerId { get; set; }
         public Organizer Organizer { get; set; } = null!;
+
+        public ICollection<Match> Matches { get; set; } = [];
+
     }
 }
