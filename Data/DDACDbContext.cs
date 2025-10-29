@@ -125,6 +125,11 @@ namespace DDACAssignment.Data
                 .HasOne(mr => mr.Team)
                 .WithMany()
                 .HasForeignKey(mr => mr.TeamId);
+
+            modelBuilder.Entity<Tournament>()
+                .HasMany(t => t.Teams)
+                .WithMany(t => t.Tournaments)
+                .UsingEntity(j => j.ToTable("TournamentTeams"));
         }
     }
 

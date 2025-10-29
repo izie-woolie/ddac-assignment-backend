@@ -11,5 +11,7 @@
         public ICollection<Personnel> Personnel { get; set; } = [];
 
         public ICollection<Player> Player { get; set; } = [];
+
+        public ICollection<Tournament> Tournaments { get; set; } = [];
     }
 }

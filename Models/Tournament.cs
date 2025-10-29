@@ -16,5 +16,9 @@
 
         public ICollection<TournamentResult> TournamentResults { get; set; } = [];
 
+        public ICollection<Team> Teams { get; set; } = [];
+
+
+
     }
 }
