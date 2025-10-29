@@ -35,3 +35,6 @@ app.MapControllers();
 
 app.MapGet("/", () => "You are watching the greatest API in the world: DDAC");
 app.Run();
+
+// TODO: nit - Recheck the Context lambda initial e.g m => m.MatchId
+// TODO: nit - Recheck the variable name for List e.g Tournament instead of Tournaments

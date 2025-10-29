@@ -12,5 +12,7 @@
 
         public Guid TournamentId { get; set; }
         public Tournament Tournament { get; set; } = null!;
+
+        public ICollection<PlayerMatchStat> PlayerMatchStats { get; set; } = [];
     }
 }
