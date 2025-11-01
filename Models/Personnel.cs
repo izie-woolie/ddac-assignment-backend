@@ -10,6 +10,8 @@ namespace DDACAssignment.Models
         public string Role { get; set; } = string.Empty;
         public DateTime JoinedAt { get; set; } = DateTime.UtcNow;
 
+        public User User { get; set; } = null!;
+
         public Guid TeamId { get; set; }
         public Team Team { get; set; } = null!;
     }

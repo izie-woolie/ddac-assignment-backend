@@ -42,7 +42,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 // Add Services
 builder.Services.AddScoped<IAuthService, AuthService>();
-
+builder.Services.AddScoped<IApplyService, ApplyService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

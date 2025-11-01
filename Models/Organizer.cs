@@ -11,6 +11,8 @@ namespace DDACAssignment.Models
         public DateTime JoinedAt { get; set; } = DateTime.UtcNow;
 
 
+        public User User { get; set; } = null!;
+
         public ICollection<Tournament> Tournament = [];
     }
 }

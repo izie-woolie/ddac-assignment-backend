@@ -7,8 +7,8 @@ POST {{RootUrl}}/api/auth/register
 Content-Type: application/json
 
 {
-  "username": "moolie",
-  "password": "moolie",
+  "username": "moolie2",
+  "password": "moolie2",
   "email": "moolie@gmail.com"
 }
 
