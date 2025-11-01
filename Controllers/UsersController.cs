@@ -12,18 +12,6 @@ namespace DDACAssignment.Controllers
         private readonly DDACDbContext _context;
         public UsersController(DDACDbContext context) => _context = context;
 
-        [HttpPost("register")]
-        public string Register()
-        {
-            return "register";
-        }
-
-        [HttpPost("login")]
-        public string Login()
-        {
-            return "login";
-        }
-
         [HttpGet("me")]
         public string Me()
         {

@@ -1,0 +1,59 @@
+@RootUrl = https://localhost:7289
+
+### Auth
+
+### Register
+POST {{RootUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "moolie",
+  "password": "moolie",
+  "email": "moolie@gmail.com"
+}
+
+### Result
+### {
+#   "id": "019a3efd-8a62-7c8b-b2a1-fd3f3ec0b9af",
+#   "username": "woolie",
+#   "email": "woolie@gmail.com",
+#   "passwordHash": "AQAAAAIAAYagAAAAEAvjacOlh6guhcHs6wjaD5Z+zYR5cuUOr8lBy1Av9XtRRHcORhH+Vdsv+HI4vbplqg==",
+#   "role": "User",
+#   "createdAt": "2025-11-01T10:36:34.6650465Z",
+#   "refreshToken": null,
+#   "refreshTokenExpiryTime": null,
+#   "playerProfile": null,
+#   "organizerProfile": null,
+#   "personnelProfile": null
+### }
+
+### Login
+POST {{RootUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "moolie",
+  "password": "moolie"
+}
+
+### Result
+# {
+#   "accessToken": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibW9vbGllIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIwMTlhM2YwMy00Yzg3LTdhMmItOTg0MS02MDk4OGI5NWExYzQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNzYxOTk5NzQzLCJpc3MiOiJFc3BvcnRNYW5hZ2VtZW50QXBpQXVkaWVuY2UiLCJhdWQiOiJFc3BvcnRNYW5hZ2VtZW50QXBpQXVkaWVuY2UifQ._9E4zWbqQOwY8UEhlgrylgXP77vlMEjxsUyU7aROvBzy8aFBpSn21IHTc58cNH7fIiau3OioxcCf1HHmEtzMzw",
+#   "refreshToken": "+tCKxV4blS+ssyBWaUOKvcMCUL513yj7mKl9bmgM6Jk="
+# }
+
+### Refresh Token
+POST {{RootUrl}}/api/auth/refresh-token
+Content-Type: application/json
+
+{
+  "userId": "019a3f03-4c87-7a2b-9841-60988b95a1c4",
+  "refreshToken": "xbXtu8pofg42h552G2IcIpxA8doa7A+OTHzibz55iig="
+}
+
+### {
+#   "accessToken": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibW9vbGllIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIwMTlhM2YwMy00Yzg3LTdhMmItOTg0MS02MDk4OGI5NWExYzQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNzYyMDAyMjY5LCJpc3MiOiJFc3BvcnRNYW5hZ2VtZW50QXBpQXVkaWVuY2UiLCJhdWQiOiJFc3BvcnRNYW5hZ2VtZW50QXBpQXVkaWVuY2UifQ.DdAC4Lr923SB3iZoa_VgUZ9EZjRHMx1_7FR17jPMwbjwBQI-28535y-tYTYkkHZyE0WPnJ8JoqCHBN1MvtSX3Q",
+#   "refreshToken": "xbXtu8pofg42h552G2IcIpxA8doa7A+OTHzibz55iig="
+### }
+
+

@@ -14,7 +14,7 @@ namespace DDACAssignment.Services
 {
     public class AuthService(DDACDbContext context, IConfiguration configuration) : IAuthService
     {
-        async Task<TokenResponseDto?> IAuthService.LoginAsync(UserDto request)
+        async Task<TokenResponseDto?> IAuthService.LoginAsync(AuthDto request)
         {
             var user = await context.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
             if (user is null)
@@ -33,12 +33,24 @@ namespace DDACAssignment.Services
 
         }
 
-        Task<TokenResponseDto?> IAuthService.RefreshTokenAsync(RefreshTokenRequestDto request)
+        async Task<TokenResponseDto?> IAuthService.RefreshTokenAsync(RefreshTokenRequestDto request)
         {
-            throw new NotImplementedException();
+            var user = await ValidateRefreshTokenAsync(request.UserId, request.RefreshToken);
+
+            if (user is null)
+                return null;
+
+            var response = new TokenResponseDto
+            {
+                AccessToken = CreateToken(user),
+                RefreshToken = await GenerateAndSaveRefreshTokenAsync(user)
+
+            };
+
+            return response;
         }
 
-        async Task<User?> IAuthService.RegisterAsync(UserDto request)
+        async Task<User?> IAuthService.RegisterAsync(AuthDto request)
         {
             if (await context.Users.AnyAsync(u => u.Username == request.Username))
                 return null;
@@ -97,6 +109,22 @@ namespace DDACAssignment.Services
             user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
             await context.SaveChangesAsync();
             return refreshToken;
+        }
+
+        private async Task<User?> ValidateRefreshTokenAsync(Guid userId, string refreshToken)
+        {
+            var user = await context.Users.FindAsync(userId);
+
+            if (user is null)
+                return null;
+
+            if (user.RefreshToken != refreshToken)
+                return null;
+
+            if (user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+                return null;
+
+            return user;
         }
     }
 }

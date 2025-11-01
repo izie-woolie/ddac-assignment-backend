@@ -6,8 +6,8 @@ namespace DDACAssignment.Services
 {
     public interface IAuthService
     {
-        Task<User?> RegisterAsync(UserDto request);
-        Task<TokenResponseDto?> LoginAsync(UserDto request);
+        Task<User?> RegisterAsync(AuthDto request);
+        Task<TokenResponseDto?> LoginAsync(AuthDto request);
         Task<TokenResponseDto?> RefreshTokenAsync(RefreshTokenRequestDto request);
     }
 }

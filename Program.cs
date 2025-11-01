@@ -64,5 +64,6 @@ app.Run();
 // TODO: nit - Recheck the variable name for List e.g Tournament instead of Tournaments
 // TODO: Add constraints
 // TODO: Configure Docker
-// TODO: Create Auth Route
+// TODO: Create Admin
+// TODO: Create Request Table
 // TODO: Separate HTTP methods into it rightful controller
