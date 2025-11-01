@@ -1,8 +1,11 @@
-﻿namespace DDACAssignment.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DDACAssignment.Models
 {
     public class User
     {
         // User Data
+        [Key]
         public Guid Id { get; set; }
         public string Username { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
@@ -14,6 +17,8 @@
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
 
+        // Roles
+        public Admin? Admin { get; set; }
         public Player? PlayerProfile { get; set; }
         public Organizer? OrganizerProfile { get; set; }
         public Personnel? PersonnelProfile { get; set; }

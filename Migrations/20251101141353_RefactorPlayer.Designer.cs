@@ -3,6 +3,7 @@ using System;
 using DDACAssignment.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DDACAssignment.Migrations
 {
     [DbContext(typeof(DDACDbContext))]
-    partial class DDACDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251101141353_RefactorPlayer")]
+    partial class RefactorPlayer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -151,9 +154,15 @@ namespace DDACAssignment.Migrations
                     b.Property<Guid>("TeamId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TeamId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Personnels");
                 });
@@ -440,9 +449,6 @@ namespace DDACAssignment.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("PersonnelProfileId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("RefreshToken")
                         .HasColumnType("text");
 
@@ -458,8 +464,6 @@ namespace DDACAssignment.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PersonnelProfileId");
 
                     b.ToTable("Users");
                 });
@@ -539,7 +543,15 @@ namespace DDACAssignment.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DDACAssignment.Models.User", "User")
+                        .WithOne("PersonnelProfile")
+                        .HasForeignKey("DDACAssignment.Models.Personnel", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Team");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DDACAssignment.Models.Player", b =>
@@ -662,15 +674,6 @@ namespace DDACAssignment.Migrations
                     b.Navigation("Tournament");
                 });
 
-            modelBuilder.Entity("DDACAssignment.Models.User", b =>
-                {
-                    b.HasOne("DDACAssignment.Models.Personnel", "PersonnelProfile")
-                        .WithMany()
-                        .HasForeignKey("PersonnelProfileId");
-
-                    b.Navigation("PersonnelProfile");
-                });
-
             modelBuilder.Entity("TeamTournament", b =>
                 {
                     b.HasOne("DDACAssignment.Models.Team", null)
@@ -723,6 +726,8 @@ namespace DDACAssignment.Migrations
                     b.Navigation("Admin");
 
                     b.Navigation("OrganizerProfile");
+
+                    b.Navigation("PersonnelProfile");
 
                     b.Navigation("PlayerProfile");
                 });

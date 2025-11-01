@@ -1,13 +1,14 @@
-﻿namespace DDACAssignment.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DDACAssignment.Models
 {
     public class Personnel
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public string Role { get; set; } = null!;
+        [Key, ForeignKey("User")]
+        public Guid Id { get; set; }
+        public string Role { get; set; } = string.Empty;
         public DateTime JoinedAt { get; set; } = DateTime.UtcNow;
-
-        public Guid UserId { get; set; }
-        public User User { get; set; } = null!;
 
         public Guid TeamId { get; set; }
         public Team Team { get; set; } = null!;

@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 using DDACAssignment.Data;
 using DDACAssignment.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

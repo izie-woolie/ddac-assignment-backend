@@ -1,13 +1,15 @@
-﻿namespace DDACAssignment.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DDACAssignment.Models
 {
     public class Organizer
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public string OrganizationName { get; set; } = null!;
+        [Key, ForeignKey("User")]
+        public Guid Id { get; set; }
+        public string OrganizationName { get; set; } = string.Empty;
         public DateTime JoinedAt { get; set; } = DateTime.UtcNow;
 
-        public Guid UserId { get; set; }
-        public User User { get; set; } = null!;
 
         public ICollection<Tournament> Tournament = [];
     }
