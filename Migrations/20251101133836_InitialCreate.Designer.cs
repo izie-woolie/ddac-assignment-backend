@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DDACAssignment.Migrations
 {
     [DbContext(typeof(DDACDbContext))]
-    [Migration("20251029125428_AddedTeamPlayerRelationship")]
-    partial class AddedTeamPlayerRelationship
+    [Migration("20251101133836_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,43 @@ namespace DDACAssignment.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("DDACAssignment.Models.Admin", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Admins");
+                });
+
+            modelBuilder.Entity("DDACAssignment.Models.Apply", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("RequestedRole")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Applies");
+                });
 
             modelBuilder.Entity("DDACAssignment.Models.Match", b =>
                 {
@@ -38,7 +75,12 @@ namespace DDACAssignment.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("TournamentId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TournamentId");
 
                     b.ToTable("Matches");
                 });
@@ -58,6 +100,9 @@ namespace DDACAssignment.Migrations
                     b.Property<int>("Kills")
                         .HasColumnType("integer");
 
+                    b.Property<Guid>("MatchId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Result")
                         .IsRequired()
                         .HasColumnType("text");
@@ -65,7 +110,14 @@ namespace DDACAssignment.Migrations
                     b.Property<int>("Score")
                         .HasColumnType("integer");
 
+                    b.Property<Guid>("TeamId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("MatchId");
+
+                    b.HasIndex("TeamId");
 
                     b.ToTable("MatchResults");
                 });
@@ -167,13 +219,28 @@ namespace DDACAssignment.Migrations
                     b.Property<int>("Kills")
                         .HasColumnType("integer");
 
+                    b.Property<Guid>("MatchId")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("Mvp")
                         .HasColumnType("boolean");
+
+                    b.Property<Guid>("PlayerId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Score")
                         .HasColumnType("integer");
 
+                    b.Property<Guid>("TeamId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("MatchId");
+
+                    b.HasIndex("PlayerId");
+
+                    b.HasIndex("TeamId");
 
                     b.ToTable("PlayerMatchStats");
                 });
@@ -325,6 +392,9 @@ namespace DDACAssignment.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("OrganizerId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -337,6 +407,8 @@ namespace DDACAssignment.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrganizerId");
 
                     b.ToTable("Tournaments");
                 });
@@ -351,6 +423,9 @@ namespace DDACAssignment.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("TeamId")
+                        .HasColumnType("uuid");
+
                     b.Property<int>("TotalLosses")
                         .HasColumnType("integer");
 
@@ -360,7 +435,14 @@ namespace DDACAssignment.Migrations
                     b.Property<int>("TotalWins")
                         .HasColumnType("integer");
 
+                    b.Property<Guid>("TournamentId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TeamId");
+
+                    b.HasIndex("TournamentId");
 
                     b.ToTable("TournamentResults");
                 });
@@ -382,7 +464,13 @@ namespace DDACAssignment.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("RefreshTokenExpiryTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -395,11 +483,58 @@ namespace DDACAssignment.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("TeamTournament", b =>
+                {
+                    b.Property<Guid>("TeamsId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TournamentsId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("TeamsId", "TournamentsId");
+
+                    b.HasIndex("TournamentsId");
+
+                    b.ToTable("TeamTournament");
+                });
+
+            modelBuilder.Entity("DDACAssignment.Models.Match", b =>
+                {
+                    b.HasOne("DDACAssignment.Models.Tournament", "Tournament")
+                        .WithMany("Matches")
+                        .HasForeignKey("TournamentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tournament");
+                });
+
+            modelBuilder.Entity("DDACAssignment.Models.MatchResult", b =>
+                {
+                    b.HasOne("DDACAssignment.Models.Match", "Match")
+                        .WithMany("MatchResults")
+                        .HasForeignKey("MatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DDACAssignment.Models.Team", "Team")
+                        .WithMany()
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Match");
+
+                    b.Navigation("Team");
+                });
+
             modelBuilder.Entity("DDACAssignment.Models.Organizer", b =>
                 {
                     b.HasOne("DDACAssignment.Models.User", "User")
                         .WithOne("OrganizerProfile")
-                        .HasForeignKey("DDACAssignment.Models.Organizer", "UserId");
+                        .HasForeignKey("DDACAssignment.Models.Organizer", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -414,7 +549,9 @@ namespace DDACAssignment.Migrations
 
                     b.HasOne("DDACAssignment.Models.User", "User")
                         .WithOne("PersonnelProfile")
-                        .HasForeignKey("DDACAssignment.Models.Personnel", "UserId");
+                        .HasForeignKey("DDACAssignment.Models.Personnel", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Team");
 
@@ -431,11 +568,40 @@ namespace DDACAssignment.Migrations
 
                     b.HasOne("DDACAssignment.Models.User", "User")
                         .WithOne("PlayerProfile")
-                        .HasForeignKey("DDACAssignment.Models.Player", "UserId");
+                        .HasForeignKey("DDACAssignment.Models.Player", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Team");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DDACAssignment.Models.PlayerMatchStat", b =>
+                {
+                    b.HasOne("DDACAssignment.Models.Match", "Match")
+                        .WithMany("PlayerMatchStats")
+                        .HasForeignKey("MatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DDACAssignment.Models.Player", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DDACAssignment.Models.Team", "Team")
+                        .WithMany()
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Match");
+
+                    b.Navigation("Player");
+
+                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("DDACAssignment.Models.PlayerPerformance", b =>
@@ -464,7 +630,9 @@ namespace DDACAssignment.Migrations
                 {
                     b.HasOne("DDACAssignment.Models.Match", "Matches")
                         .WithOne("Schedule")
-                        .HasForeignKey("DDACAssignment.Models.Schedule", "MatchId");
+                        .HasForeignKey("DDACAssignment.Models.Schedule", "MatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Matches");
                 });
@@ -480,8 +648,57 @@ namespace DDACAssignment.Migrations
                     b.Navigation("Team");
                 });
 
+            modelBuilder.Entity("DDACAssignment.Models.Tournament", b =>
+                {
+                    b.HasOne("DDACAssignment.Models.Organizer", "Organizer")
+                        .WithMany()
+                        .HasForeignKey("OrganizerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organizer");
+                });
+
+            modelBuilder.Entity("DDACAssignment.Models.TournamentResult", b =>
+                {
+                    b.HasOne("DDACAssignment.Models.Team", "Team")
+                        .WithMany()
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DDACAssignment.Models.Tournament", "Tournament")
+                        .WithMany("TournamentResults")
+                        .HasForeignKey("TournamentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Team");
+
+                    b.Navigation("Tournament");
+                });
+
+            modelBuilder.Entity("TeamTournament", b =>
+                {
+                    b.HasOne("DDACAssignment.Models.Team", null)
+                        .WithMany()
+                        .HasForeignKey("TeamsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DDACAssignment.Models.Tournament", null)
+                        .WithMany()
+                        .HasForeignKey("TournamentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DDACAssignment.Models.Match", b =>
                 {
+                    b.Navigation("MatchResults");
+
+                    b.Navigation("PlayerMatchStats");
+
                     b.Navigation("Rounds");
 
                     b.Navigation("Schedule");
@@ -499,6 +716,13 @@ namespace DDACAssignment.Migrations
                     b.Navigation("Player");
 
                     b.Navigation("TeamStatistic");
+                });
+
+            modelBuilder.Entity("DDACAssignment.Models.Tournament", b =>
+                {
+                    b.Navigation("Matches");
+
+                    b.Navigation("TournamentResults");
                 });
 
             modelBuilder.Entity("DDACAssignment.Models.User", b =>

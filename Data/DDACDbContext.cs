@@ -26,10 +26,9 @@ namespace DDACAssignment.Data
         public DbSet<TeamStatistic> TeamStatistics => Set<TeamStatistic>();
         public DbSet<PlayerPerformance> PlayerPerformances => Set<PlayerPerformance>();
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-        }
+        public DbSet<Apply> Applies => Set<Apply>();
+
+        public DbSet<Admin> Admins => Set<Admin>();
     }
 
 }
