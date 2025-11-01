@@ -1,5 +1,9 @@
+using System.Text;
 using DDACAssignment.Data;
+using DDACAssignment.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +21,26 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Add JWT Authentication
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["AppSettings:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["AppSettings:Audience"],
+            ValidateLifetime = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:Audience"]!)),
+            ValidateIssuerSigningKey = true
+        };
+    });
+
+// Add Services
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
@@ -39,4 +63,6 @@ app.Run();
 // TODO: nit - Recheck the Context lambda initial e.g m => m.MatchId
 // TODO: nit - Recheck the variable name for List e.g Tournament instead of Tournaments
 // TODO: Add constraints
+// TODO: Configure Docker
+// TODO: Create Auth Route
 // TODO: Separate HTTP methods into it rightful controller
