@@ -1,4 +1,29 @@
-@RootUrl = http://localhost:5293
+@RootUrl = https://localhost:7289
+
+### Auth
+POST {{RootUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "moolie",
+  "password": "moolie",
+  "email": "moolie@gmail.com"
+}
+
+### Result
+### {
+#   "id": "019a3efd-8a62-7c8b-b2a1-fd3f3ec0b9af",
+#   "username": "woolie",
+#   "email": "woolie@gmail.com",
+#   "passwordHash": "AQAAAAIAAYagAAAAEAvjacOlh6guhcHs6wjaD5Z+zYR5cuUOr8lBy1Av9XtRRHcORhH+Vdsv+HI4vbplqg==",
+#   "role": "User",
+#   "createdAt": "2025-11-01T10:36:34.6650465Z",
+#   "refreshToken": null,
+#   "refreshTokenExpiryTime": null,
+#   "playerProfile": null,
+#   "organizerProfile": null,
+#   "personnelProfile": null
+### }
 
 ### User
 ### GetUsers
