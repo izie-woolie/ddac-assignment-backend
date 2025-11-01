@@ -1,4 +1,5 @@
-﻿using DDACAssignment.Dtos.User;
+﻿using DDACAssignment.Dtos.TokenRequest;
+using DDACAssignment.Dtos.User;
 using DDACAssignment.Models;
 using DDACAssignment.Services;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +20,16 @@ namespace DDACAssignment.Controllers
                 return BadRequest("Username is already exists!");
 
             return Ok(user);
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<TokenResponseDto>> Login(UserDto request)
+        {
+            var result = await authService.LoginAsync(request);
+            if (result is null)
+                return BadRequest("Invalid username or password");
+
+            return Ok(result);
         }
     }
 }

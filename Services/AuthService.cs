@@ -1,21 +1,39 @@
-﻿using System.Runtime.InteropServices.JavaScript;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using DDACAssignment.Data;
 using DDACAssignment.Dtos.TokenRequest;
 using DDACAssignment.Dtos.User;
 using DDACAssignment.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DDACAssignment.Services
 {
-    public class AuthService(DDACDbContext context) : IAuthService
+    public class AuthService(DDACDbContext context, IConfiguration configuration) : IAuthService
     {
-        Task<TokenRequestResponseDto?> IAuthService.LoginAsync(UserDto request)
+        async Task<TokenResponseDto?> IAuthService.LoginAsync(UserDto request)
         {
-            throw new NotImplementedException();
+            var user = await context.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
+            if (user is null)
+                return null;
+
+            if (new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, request.Password) == PasswordVerificationResult.Failed)
+                return null;
+
+            var response = new TokenResponseDto
+            {
+                AccessToken = CreateToken(user),
+                RefreshToken = await GenerateAndSaveRefreshTokenAsync(user)
+            };
+
+            return response;
+
         }
 
-        Task<TokenRequestResponseDto?> IAuthService.RefreshTokenAsync(RefreshTokenRequestDto request)
+        Task<TokenResponseDto?> IAuthService.RefreshTokenAsync(RefreshTokenRequestDto request)
         {
             throw new NotImplementedException();
         }
@@ -38,6 +56,47 @@ namespace DDACAssignment.Services
 
             await context.SaveChangesAsync();
             return user;
+        }
+
+        private string CreateToken(User user)
+        {
+            var claims = new List<Claim>
+            {
+                new(ClaimTypes.Name, user.Username),
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(ClaimTypes.Role, user.Role)
+            };
+
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(configuration.GetValue<string>("AppSettings:Token")!));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
+
+            var tokenDescriptor = new JwtSecurityToken(
+                    issuer: configuration.GetValue<string>("AppSettings:Audience"),
+                    audience: configuration.GetValue<string>("AppSettings:Audience"),
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddHours(1),
+                    signingCredentials: creds
+                );
+
+            return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
+        }
+
+        private string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+            return Convert.ToBase64String(randomNumber);
+        }
+        private async Task<string> GenerateAndSaveRefreshTokenAsync(User user)
+        {
+            var refreshToken = GenerateRefreshToken();
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            await context.SaveChangesAsync();
+            return refreshToken;
         }
     }
 }
