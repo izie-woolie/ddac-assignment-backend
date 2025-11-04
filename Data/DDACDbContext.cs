@@ -1,4 +1,5 @@
 ﻿using DDACAssignment.Models;
+using DDACAssignment.Models.Request;
 using Microsoft.EntityFrameworkCore;
 
 namespace DDACAssignment.Data
@@ -26,7 +27,9 @@ namespace DDACAssignment.Data
         public DbSet<TeamStatistic> TeamStatistics => Set<TeamStatistic>();
         public DbSet<PlayerPerformance> PlayerPerformances => Set<PlayerPerformance>();
 
-        public DbSet<Apply> Applies => Set<Apply>();
+        public DbSet<Request> Requests => Set<Request>();
+        public DbSet<PromoteRequest> PRequests => Set<PromoteRequest>();
+        public DbSet<ApplyRequest> ARequests => Set<ApplyRequest>();
 
         public DbSet<Admin> Admins => Set<Admin>();
     }

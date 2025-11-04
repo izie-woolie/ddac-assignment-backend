@@ -1,7 +1,10 @@
-﻿namespace DDACAssignment.Services
+﻿using DDACAssignment.Dtos.Request;
+
+namespace DDACAssignment.Services
 {
     public interface IApplyService
     {
-        Task<> ApplyOrganizerAsync(request);
+        string? ApplyOrganizerAsync(ApplyOrganizerDto request);
+        string? ApplyTeamAsync(string? request);
     }
 }

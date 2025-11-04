@@ -1,9 +1,9 @@
-﻿namespace DDACAssignment.Models
+﻿namespace DDACAssignment.Models.Request
 {
-    public class Apply
+    public abstract class Request
     {
         public Guid Id { get; set; }
-        public string RequestedRole { get; set; } = string.Empty;
+        public Guid Requested { get; set; }
         public string Status { get; set; } = "Pending";
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
