@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   ddcapi:
-    image: ddcapi:testv2
+    image: ddcapi:latest
     build: .
     ports:
     - "8080:8080"
