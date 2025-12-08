@@ -43,3 +43,4 @@ $ docker compose down
 Deploying with Task Role
 Please work
 Update Roles with SSM permission.
+Change Strings in SSL Mode and Certificate

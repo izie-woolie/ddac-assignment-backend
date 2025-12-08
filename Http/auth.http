@@ -1,6 +1,5 @@
 # @RootUrl = https://localhost:7289
-@RootUrl = http://localhost:8080
-
+@RootUrl = http://3.25.221.145:8080
 ### Auth
 
 ### Register
@@ -8,9 +7,9 @@ POST {{RootUrl}}/api/auth/register
 Content-Type: application/json
 
 {
-  "username": "moolie2",
-  "password": "moolie2",
-  "email": "moolie@gmail.com"
+  "username": "foo",
+  "password": "foo2",
+  "email": "foo@gmail.com"
 }
 
 ### Result
