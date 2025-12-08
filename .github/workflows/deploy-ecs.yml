@@ -34,11 +34,15 @@ jobs:
           --query taskDefinition \
           --output json > task.json
 
+    - name: Clean task definition
+      run: |
+        jq 'del(.enableFaultInjection)' task.json > cleaned-task.json
+
     - name: Render new task definition
       id: render-task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: task.json
+        task-definition: cleaned-task.json
         container-name: ddac-api
         image: ${{ secrets.ECR_REPOSITORY }}:latest
 
