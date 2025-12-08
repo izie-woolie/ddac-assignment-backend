@@ -38,7 +38,7 @@ jobs:
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: task.json
-        container-name: app
+        container-name: ddac-api
         image: ${{ secrets.ECR_REPOSITORY }}:latest
 
     - name: Deploy ECS task definition
