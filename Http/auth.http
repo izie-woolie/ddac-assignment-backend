@@ -1,6 +1,8 @@
 # @RootUrl = https://localhost:7289
-@RootUrl = http://3.25.221.145:8080
+@RootUrl = http://3.26.164.169:8080
 ### Auth
+
+GET {{RootUrl}}
 
 ### Register
 POST {{RootUrl}}/api/auth/register
